@@ -28,5 +28,4 @@ Just need to uncomment the test data that you want to try and the last line of t
 -------------------------
 
 
-Observation: In my first approach to the problem I did it with list indexs in consecuense the code was very unconfortable to read, improve, scale. That's why I change to more human nomenclature, avoiding list indexs.
-Also 
+Observation: In my first approach to the problem I did it with list indexs, in consecuense the code was very unconfortable to read, improve and scale. That's why I change to more human nomenclature, avoiding list indexs.
