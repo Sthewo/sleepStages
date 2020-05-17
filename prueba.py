@@ -6,7 +6,7 @@ from operator import itemgetter
 ###TEST DATA
 '''
 data = [{"dateTime": "2020-01-30T01:43:30.000","level": "rem","seconds": 180},{"dateTime":"2020-01-30T01:46:30.000","level":"light","seconds":60},{"dateTime":"2020-01-30T01:47:30.000","level":"light","seconds":60}]
-shortData=[{"dateTime": "2020-01-30T01:44:30.000","level":"wake","seconds": 60},{"dateTime": "2020-01-30T01:43:40.000","level":"wake","seconds": 10}]
+shortData=[{"dateTime": "2020-01-30T01:44:30.000","level":"wake","seconds": 60},{"dateTime": "2020-01-30T01:43:40.000","level":"wake","seconds": 10},{"dateTime": "2020-01-30T01:47:20.000","level":"wake","seconds": 20},{"dateTime": "2020-01-30T01:48:00.000","level":"wake","seconds": 20}]
 '''
 '''
 data = [{"dateTime": "2020-01-30T01:43:30.000","level": "rem","seconds": 180},{"dateTime":"2020-01-30T01:46:30.000","level":"light","seconds":60},]
@@ -65,11 +65,12 @@ def restructureData(arrStage):
 			try:
 				nextStage = arrStage.pop()
 			except (IndexError):
+				currentStage['seconds'] = TimeRemeaning
 				finalData.append(currentStage)
 				break
 			
 			if currentStage['dataType'] != nextStage['dataType']:
-
+				
 				duration = nextStage['dateTime'] - currentStage['dateTime']
 				currentStage['seconds'] = duration.total_seconds()
 
@@ -79,6 +80,8 @@ def restructureData(arrStage):
 				
 				TimeRemeaning -= currentStage['seconds']
 				TimeRemeaning -= nextStage['seconds']
+
+				
 
 				currentStage['dateTime'] += timedelta(seconds = currentStage['seconds'])
 				currentStage['dateTime'] += timedelta(seconds = nextStage['seconds'])
@@ -94,11 +97,12 @@ def restructureData(arrStage):
 				break
 
 
-		if currentStage['dataType'] == nextStage['dataType'] and TimeRemeaning < 0:
-
+		if TimeRemeaning < 0:
 			nextStage = arrStage.pop()
-			dateTime = nextStage['dateTime'] - TimeRemeaning
-			nextStage['dateTime'] = dateTime
+			nextStage['dateTime'] -= timedelta(seconds = TimeRemeaning)
+			nextStage['seconds'] += TimeRemeaning
+			
+			
 			arrStage.append(nextStage)
 
 
@@ -106,9 +110,10 @@ def restructureData(arrStage):
 
 
 
-###Clean data to return it in the way they ask for
+###Clean data to return it in the structure they ask for
 finalData = restructureData(totalData)
 for data in finalData:
 	data['dateTime'] = data['dateTime'].strftime('%Y-%m-%dT%H:%M:%S.%f')
+	data['seconds'] = int(data['seconds'])
 	del data['dataType']
 	print(data)
