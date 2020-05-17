@@ -13,6 +13,7 @@ Initial idea to propose the task:
   5.Retrieve the new list created
   
 
+-------------------------
 
 
 Final task:
@@ -22,6 +23,9 @@ The first one named "restructureData" to do the main task of problem and the sec
 
 At the begging of the code it include 2 test to run the program in a very easy way.
 Just need to uncomment the test data that you want to try and the last line of the code that run the "sleepingStages" function.
+
+
+-------------------------
 
 
 Observation: In my first approach to the problem I did it with list indexs in consecuense the code was very unconfortable to read, improve, scale. That's why I change to more human nomenclature, avoiding list indexs.
