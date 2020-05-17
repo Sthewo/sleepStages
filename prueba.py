@@ -3,14 +3,17 @@ import datetime
 from datetime import timedelta
 from operator import itemgetter
 
+###TEST DATA
+'''
 data = [{"dateTime": "2020-01-30T01:43:30.000","level": "rem","seconds": 180},{"dateTime":"2020-01-30T01:46:30.000","level":"light","seconds":60},{"dateTime":"2020-01-30T01:47:30.000","level":"light","seconds":60}]
 shortData=[{"dateTime": "2020-01-30T01:44:30.000","level":"wake","seconds": 60},{"dateTime": "2020-01-30T01:43:40.000","level":"wake","seconds": 10}]
+'''
 '''
 data = [{"dateTime": "2020-01-30T01:43:30.000","level": "rem","seconds": 180},{"dateTime":"2020-01-30T01:46:30.000","level":"light","seconds":60},]
 shortData=[{"dateTime": "2020-01-30T01:44:30.000","level":"wake","seconds": 60}]
 '''
+###END TEST DATA
 
-##
 ##Add dataType to every element of both arrays
 
 for stage in data:
@@ -20,7 +23,6 @@ for stage in data:
 for stage in shortData:
 	stage['dataType'] = 'shortData'
 
-##
 ##Merge both arrays
 
 totalData = data + shortData
@@ -32,34 +34,30 @@ for stage in totalData:
 
 
 
-##
+
 ##Arrange totalData rising by dateTime
 
 totalData.sort(key=itemgetter('dateTime'), reverse=True)
-'''def bubbleSort(arr): 
-    n = len(arr)
-  
-    for i in range(n-1): 
-        for j in range(0, n-i-1): 
-            if arr[j]['dateTime'] > arr[j+1]['dateTime'] : 
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-    return arr
 
-totalData = bubbleSort(totalData)'''
 
-#
 ##Restructure data algorithm
 '''
 Compare the current stage with the following.
-If they come from the same initial there is not any option that they have to reorganize the stages.
-If they are not the same recalculate the new duration time.
-I do it in a while loop because it can have more than 1 short awake while stil in rem.
-If they have the same dataType do nothing.
+If they come from the same data there are OK. Just append the current to the new list and the next one return to the gived list in the same place it was.
+If they are not the same recalculate the new duration time and append the current and after the next one to the new list. After append both,
+Also recalculate the new dateTime for the current stage.
+I do it in a while loop because it can have more than 1 short awake while stil in rem/light stage.
+When I dont have more stages to look at finish the process.
 '''
 def restructureData(arrStage):
 	finalData = []
-	for currentStage in arrStage:
-		arrStage.pop()
+	while True:
+
+		try:
+			currentStage = arrStage.pop()
+		except (IndexError):
+			break
+
 		TimeRemeaning = currentStage['seconds']
 
 		while TimeRemeaning >= 0:
@@ -103,9 +101,12 @@ def restructureData(arrStage):
 			nextStage['dateTime'] = dateTime
 			arrStage.append(nextStage)
 
+
 	return finalData
 
 
+
+###Clean data to return it in the way they ask for
 finalData = restructureData(totalData)
 for data in finalData:
 	data['dateTime'] = data['dateTime'].strftime('%Y-%m-%dT%H:%M:%S.%f')
