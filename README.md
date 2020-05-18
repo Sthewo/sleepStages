@@ -22,7 +22,7 @@ The python file named "prueba.py" contains 2 funcitions.
 The first one named "restructureData" to do the main task of problem and the second one named "sleepingStages" include whole problem including "restructureData".
 
 At the begging of the code it include 2 test to run the program in a very easy way.
-Just need to uncomment the test data that you want to try and the last line of the code that run the "sleepingStages" function.
+Just need to uncomment the test data that you want to try, the line 170 to print the data and the last line of the code that run the "sleepingStages" function.
 
 
 -------------------------
